@@ -4,5 +4,8 @@
     "react-fireworks": "^1.0.4",
     "react-rain-animation": "^1.0.4",
     "react-snowfall": "^2.2.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
