@@ -1,8 +1,14 @@
 import { words } from "./words"
+import { danishWords } from "./danishWords"
 
 export function getRandomWord() {
     const randomIndex = Math.floor(Math.random() * words.length)
     return words[randomIndex]
+}
+
+export function getRandomDanishWord() {
+    const randomIndex = Math.floor(Math.random() * danishWords.length)
+    return danishWords[randomIndex]
 }
 
 export function getFarewellText(language) {

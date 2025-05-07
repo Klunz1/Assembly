@@ -1,18 +1,19 @@
 import { useState } from "react"
 import { clsx } from "clsx"
 import { languages } from "./languages"
-import { getFarewellText, getRandomWord } from "./utils"
+import { getFarewellText, getRandomWord, getRandomDanishWord } from "./utils"
 import Confetti from "react-confetti"
-import Snowfall from 'react-snowfall'
 import Rain from 'react-rain-animation';
 import "react-rain-animation/lib/style.css";
 
 
 
 
+
 export default function AssemblyEndgame() {
     // State values
-    const [currentWord, setCurrentWord] = useState(() => getRandomWord())
+    const [isEnglish, setIsEnglish] = useState(true)
+    const [currentWord, setCurrentWord] = useState(() => (isEnglish ?getRandomWord() : getRandomDanishWord()))
     const [guessedLetters, setGuessedLetters] = useState([])
 
     // Derived values
@@ -27,7 +28,18 @@ export default function AssemblyEndgame() {
     const isLastGuessIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter)
 
     // Static values
-    const alphabet = "abcdefghijklmnopqrstuvwxyz"
+    const englishAlphabet = "abcdefghijklmnopqrstuvwxyz"
+
+    const danishAlphabet = "abcdefghijklmnopqrstuvwxyzæøå"
+
+    function toggleLanguage() {
+        setIsEnglish(prev => {
+            const newIsEnglish = !prev;
+            setCurrentWord(newIsEnglish ? getRandomWord() : getRandomDanishWord());
+            return newIsEnglish;
+        });
+        setGuessedLetters([]);
+    }
 
     function addGuessedLetter(letter) {
         setGuessedLetters(prevLetters =>
@@ -38,7 +50,7 @@ export default function AssemblyEndgame() {
     }
 
     function startNewGame() {
-        setCurrentWord(getRandomWord())
+        setCurrentWord((isEnglish ? getRandomWord() : getRandomDanishWord()))
         setGuessedLetters([])
     }
 
@@ -73,7 +85,7 @@ export default function AssemblyEndgame() {
         )
     })
 
-    const keyboardElements = alphabet.split("").map(letter => {
+    const keyboardElements = (isEnglish ? englishAlphabet : danishAlphabet).split("").map(letter => {
         const isGuessed = guessedLetters.includes(letter)
         const isCorrect = isGuessed && currentWord.includes(letter)
         const isWrong = isGuessed && !currentWord.includes(letter)
@@ -136,9 +148,12 @@ export default function AssemblyEndgame() {
             {isGameLost && <Rain numDrops={15} />}
             {isGameWon && <Confetti />}
             <header>
+                <button className="flag-button" onClick={toggleLanguage}>
+                    {isEnglish ? "Skift til Dansk" : "Switch to English"}
+                </button>
                 <h1>Assembly: Endgame</h1>
                 <p>Guess the word within 8 attempts to keep the
-                programming world safe from Assembly!</p>
+                    programming world safe from Assembly!</p>
             </header>
 
             <section
