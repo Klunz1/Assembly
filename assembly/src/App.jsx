@@ -34,11 +34,11 @@ export default function AssemblyEndgame() {
 
     function toggleLanguage() {
         setIsEnglish(prev => {
-            const newIsEnglish = !prev;
-            setCurrentWord(newIsEnglish ? getRandomWord() : getRandomDanishWord());
-            return newIsEnglish;
-        });
-        setGuessedLetters([]);
+            const newIsEnglish = !prev
+            setCurrentWord(newIsEnglish ? getRandomWord() : getRandomDanishWord())
+            return newIsEnglish
+        })
+        setGuessedLetters([])
     }
 
     function addGuessedLetter(letter) {
